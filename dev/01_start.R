@@ -24,6 +24,7 @@ golem::fill_desc(
   pkg_description = "A dashboard to monitor the publication of new CVEs.", # The Description of the package containing the App
   author_first_name = "Etienne", # Your First Name
   author_last_name = "Rolland", # Your Last Name
+  author_orcid = "0000-0002-0980-4318" ,
   author_email = "etienne.rolland.cdk@gmail.com", # Your Email
   repo_url = "https://github.com/Cdk29/cveR", # The URL of the GitHub Repo (optional),
   pkg_version = "0.0.0.9000" # The Version of the package containing the App
