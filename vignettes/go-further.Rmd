@@ -26,7 +26,7 @@ library(cveR)
 cves_harvesting()
 ```
 
-The following function is to create the test file that will live inside the test folder, as well as the github repository :
+The following function is just to create the test file that will live inside the test folder, as well as in the github repository :
 
 
 ```{r}
@@ -39,7 +39,7 @@ write_head_to_csv <- function(input_file_name, output_file_name, num_rows = 6) {
 ```
 
 ```{r}
-#write_head_to_csv(input_file_name = "allitems.csv", output_file_name = )
+#write_head_to_csv(input_file_name = "allitems.csv", output_file_name = "tests/testthat/allitems_test.csv", num_rows = 60)
 ```
 
 ```{r}
