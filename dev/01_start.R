@@ -20,12 +20,12 @@
 ##
 golem::fill_desc(
   pkg_name = "cveR", # The Name of the package containing the App
-  pkg_title = "PKG_TITLE", # The Title of the package containing the App
-  pkg_description = "PKG_DESC.", # The Description of the package containing the App
-  author_first_name = "AUTHOR_FIRST", # Your First Name
-  author_last_name = "AUTHOR_LAST", # Your Last Name
-  author_email = "AUTHOR@MAIL.COM", # Your Email
-  repo_url = NULL, # The URL of the GitHub Repo (optional),
+  pkg_title = "Monitor the publication of new CVEs", # The Title of the package containing the App
+  pkg_description = "A dashboard to monitor the publication of new CVEs.", # The Description of the package containing the App
+  author_first_name = "Etienne", # Your First Name
+  author_last_name = "Rolland", # Your Last Name
+  author_email = "etienne.rolland.cdk@gmail.com", # Your Email
+  repo_url = "https://github.com/Cdk29/cveR", # The URL of the GitHub Repo (optional),
   pkg_version = "0.0.0.9000" # The Version of the package containing the App
 )
 
