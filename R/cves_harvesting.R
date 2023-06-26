@@ -29,3 +29,27 @@ cves_harvesting <- function(url = "https://cve.mitre.org/data/downloads/allitems
   return(download_status)
 }
 
+
+#' Read Data from CVEs CSV File
+#'
+#' This function reads a CSV file, skipping the first few rows to retrieve the headers and data separately.
+#' It then assigns the header names to the data and returns a dataframe.
+#'
+#' @param file_name The name of the file to read.
+#' 
+#' @return A dataframe with data from the CSV file.
+#0' 
+#' @examples
+#' read_data_CVEs("allitems.csv")
+#'
+#' cves_harvesting("https://raw.githubusercontent.com/Cdk29/cveR/main/tests/testthat/allitems_test.csv", "test_download_from_github.csv")
+#' CVEs_df <- read_data_CVEs("test_download_from_github.csv")
+#' head(CVEs_df, 2)
+#' colnames(CVEs_df)
+#' @export
+read_data_CVEs <- function(file_name) {
+  headers = read.csv(file_name, skip = 2, nrows = 1, header = TRUE)
+  data <- read.csv(file_name, encoding = "ISO-8859-1", skip = 10, header = TRUE, stringsAsFactors = FALSE)
+  colnames(data) <- colnames(headers)
+  return(data)
+}

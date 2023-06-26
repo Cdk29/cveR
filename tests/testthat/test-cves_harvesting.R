@@ -23,3 +23,21 @@ test_that("test_download_from_github.csv is the same as allitems_test.csv", {
       })
      expect_true(all.equal(downloaded_data, test_data))
 })
+
+test_that("read_data_CVEs correctly reads column names", {
+  # Attempt to read the test data from two different locations
+  test_data <- tryCatch(
+    {
+      read_data_CVEs("allitems_test.csv")
+    },
+    warning = function(w) {
+      read_data_CVEs("tests/testthat/allitems_test.csv")
+    },
+    error = function(e) {
+      read_data_CVEs("tests/testthat/allitems_test.csv")
+    }
+  )
+
+  expected_colnames <- c("Status", "Description", "References", "Phase", "Votes", "Comments")
+  expect_equal(colnames(test_data), expected_colnames)
+})
