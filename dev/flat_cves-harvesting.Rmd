@@ -63,7 +63,7 @@ write_head_to_csv <- function(input_file_name, output_file_name, num_rows = 6) {
 ```
 
 ```{r}
-#write_head_to_csv(input_file_name = "allitems.csv", output_file_name = "tests/testthat/allitems_test.csv")
+#write_head_to_csv(input_file_name = "allitems.csv", output_file_name = "tests/testthat/allitems_test.csv", num_rows = 60)
 ```
 
 
