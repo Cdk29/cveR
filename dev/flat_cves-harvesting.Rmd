@@ -71,11 +71,9 @@ write_head_to_csv <- function(input_file_name, output_file_name, num_rows = 6) {
 test_that("cves_harvesting returns FALSE when an invalid URL is given", {
     expect_false(cves_harvesting("http://this-is-an-invalid-url.csv"))
 })
-```
 
-```{r}
 test_that("cves_harvesting returns FALSE when an invalid URL is given", {
-    expect_false(cves_harvesting("http://this-is-an-invalid-url.csv"))
+    expect_true(cves_harvesting("https://github.com/Cdk29/cveR/blob/main/tests/testthat/allitems_test.csv"))
 })
 ```
 
