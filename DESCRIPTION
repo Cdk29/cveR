@@ -1,7 +1,7 @@
 Package: cveR
 Title: Monitor the publication of new CVEs
 Version: 0.0.0.9000
-Authors@R: person('Etienne', 'Rolland', email = 'etienne.rolland.cdk@gmail.com', role = c('cre', 'aut'))
+Authors@R: person('Etienne', 'Rolland', email = 'etienne.rolland.cdk@gmail.com', role = c('cre', 'aut'), comment = c(ORCID = '0000-0002-0980-4318'))
 Description: A dashboard to monitor the publication of new CVEs.
 License: What license is it under?
 Imports: 
