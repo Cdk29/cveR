@@ -16,6 +16,7 @@ knitr::opts_chunk$set(
 # cveR
 
 <!-- badges: start -->
+[![Codecov test coverage](https://codecov.io/gh/Cdk29/cveR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/Cdk29/cveR?branch=main)
 <!-- badges: end -->
 
 The goal of cveR is togit ...

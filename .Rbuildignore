@@ -8,3 +8,4 @@ $run_dev.*
 ^cveR\.Rproj$
 ^\.github$
 ^README\.Rmd$
+^codecov\.yml$
