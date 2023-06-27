@@ -1,8 +1,8 @@
 ---
-title: "Go further"
+title: "Cve_harvesting"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{go-further}
+  %\VignetteIndexEntry{cve_harvesting}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
