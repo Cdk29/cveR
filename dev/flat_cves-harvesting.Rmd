@@ -51,19 +51,31 @@ cves_harvesting <- function(url = "https://cve.mitre.org/data/downloads/allitems
 cves_harvesting()
 ```
 
-The following function is just to create the test file that will live inside the test folder, as well as in the github repository :
+The following function is just to create the test file that will live inside the test folder, as well as in the github repository.
+It does not read directly the CSV to avoid to induce downstream errors.
 
 ```{r}
-write_head_to_csv <- function(input_file_name, output_file_name, num_rows = 6) {
-  data <- read.csv(input_file_name)
-  short_data <- head(data, n = num_rows)
-  write.csv(short_data, output_file_name, row.names = FALSE)
+write_first_60_lines <- function(input_file, output_file) {
+  # Open the input and output files
+  input <- file(input_file, "r")
+  output <- file(output_file, "w")
+  
+  # Read and write the first 60 lines
+  for (i in 1:60) {
+    line <- readLines(input, n = 1)
+    writeLines(line, output)
+  }
+  
+  # Close the files
+  close(input)
+  close(output)
 }
+
 
 ```
 
 ```{r}
-#write_head_to_csv(input_file_name = "allitems.csv", output_file_name = "tests/testthat/allitems_test.csv", num_rows = 60)
+write_first_60_lines(input_file = "allitems.csv", output_file = "tests/testthat/allitems_test.csv")
 ```
 
 
@@ -118,8 +130,9 @@ read_data_CVEs <- function(file_name) {
 ```
 
 ```{r examples-read_data_CVEs}
-cves_harvesting("https://raw.githubusercontent.com/Cdk29/cveR/main/tests/testthat/allitems_test.csv", "test_download_from_github.csv")
-CVEs_df <- read_data_CVEs("test_download_from_github.csv")
+#cves_harvesting("https://raw.githubusercontent.com/Cdk29/cveR/main/tests/testthat/allitems_test.csv", "test_download_from_github.csv")
+cves_harvesting()
+CVEs_df <- read_data_CVEs("allitems.csv")
 head(CVEs_df, 2)
 colnames(CVEs_df)
 ```
@@ -139,7 +152,7 @@ test_that("read_data_CVEs correctly reads column names", {
     }
   )
 
-  expected_colnames <- c("Status", "Description", "References", "Phase", "Votes", "Comments")
+  expected_colnames <- c("Name", "Status", "Description", "References", "Phase", "Votes", "Comments")
   expect_equal(colnames(test_data), expected_colnames)
 })
 ```
