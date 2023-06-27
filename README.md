@@ -9,7 +9,7 @@
 coverage](https://codecov.io/gh/Cdk29/cveR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/Cdk29/cveR?branch=main)
 <!-- badges: end -->
 
-The goal of cveR is togit …
+The goal of cveR is monitor the publication of new CVEs.
 
 ## Installation
 
