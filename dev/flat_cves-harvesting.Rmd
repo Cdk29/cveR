@@ -75,7 +75,7 @@ write_first_60_lines <- function(input_file, output_file) {
 ```
 
 ```{r}
-write_first_60_lines(input_file = "allitems.csv", output_file = "tests/testthat/allitems_test.csv")
+# write_first_60_lines(input_file = "allitems.csv", output_file = "tests/testthat/allitems_test.csv")
 ```
 
 
@@ -130,9 +130,9 @@ read_data_CVEs <- function(file_name) {
 ```
 
 ```{r examples-read_data_CVEs}
-#cves_harvesting("https://raw.githubusercontent.com/Cdk29/cveR/main/tests/testthat/allitems_test.csv", "test_download_from_github.csv")
-cves_harvesting()
-CVEs_df <- read_data_CVEs("allitems.csv")
+cves_harvesting("https://raw.githubusercontent.com/Cdk29/cveR/main/tests/testthat/allitems_test.csv", "test_download_from_github.csv")
+#cves_harvesting()
+CVEs_df <- read_data_CVEs("test_download_from_github.csv")
 head(CVEs_df, 2)
 colnames(CVEs_df)
 ```

@@ -38,6 +38,6 @@ test_that("read_data_CVEs correctly reads column names", {
     }
   )
 
-  expected_colnames <- c("Status", "Description", "References", "Phase", "Votes", "Comments")
+  expected_colnames <- c("Name", "Status", "Description", "References", "Phase", "Votes", "Comments")
   expect_equal(colnames(test_data), expected_colnames)
 })

@@ -43,6 +43,7 @@ cves_harvesting <- function(url = "https://cve.mitre.org/data/downloads/allitems
 #' read_data_CVEs("allitems.csv")
 #'
 #' cves_harvesting("https://raw.githubusercontent.com/Cdk29/cveR/main/tests/testthat/allitems_test.csv", "test_download_from_github.csv")
+#' #cves_harvesting()
 #' CVEs_df <- read_data_CVEs("test_download_from_github.csv")
 #' head(CVEs_df, 2)
 #' colnames(CVEs_df)
