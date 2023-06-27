@@ -34,7 +34,7 @@ devtools::install_github("Cdk29/cveR")
 This is a basic example which shows you how to solve a common problem:
 
 ```{r example}
-#library(cveR)
+# library(cveR)
 ## basic example code
 ```
 
