@@ -7,6 +7,7 @@
 
 [![Codecov test
 coverage](https://codecov.io/gh/Cdk29/cveR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/Cdk29/cveR?branch=main)
+[![R-CMD-check](https://github.com/Cdk29/cveR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Cdk29/cveR/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 The goal of cveR is monitor the publication of new CVEs.
