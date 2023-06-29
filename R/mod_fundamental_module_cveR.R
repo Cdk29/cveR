@@ -1,4 +1,3 @@
-library(shinipsum)
 #' fundamental_module_cveR UI Function
 #'
 #' @description A shiny Module.
@@ -9,6 +8,7 @@ library(shinipsum)
 #'
 #' @importFrom shiny NS tagList
 #' @importFrom bsicons bs_icon
+#' @import shinipsum
 mod_fundamental_module_cveR_ui <- function(id){
   ns <- NS(id)
 

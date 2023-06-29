@@ -10,8 +10,8 @@ golem::detach_all_attached()
 # library(renv)
 # init()
 # Document and reload your package
-renv::snapshot(type = "explicit")
 golem::document_and_reload()
+renv::snapshot(type = "explicit")
 
 # Run the application
 run_app()
