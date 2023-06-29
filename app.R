@@ -2,5 +2,5 @@
 # Golemantic::run_app()
 #
 # shiny::runApp()
-# library(golem)
+library(golem)
 run_app()
