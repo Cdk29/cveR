@@ -17,9 +17,11 @@ pkgload::load_all(export_all = FALSE)
 # bdd_logic
 
 ```{r}
-cves_harvesting()
+#cves_harvesting()
 CVEs_df <- read_data_CVEs("test_download_from_github.csv")
 CVEs_df <- tail(CVEs_df)
+head(CVEs_df,1)
+
 ```
 
 ```{r function-bdd_logic}
