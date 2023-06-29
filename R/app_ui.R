@@ -3,15 +3,16 @@
 #' @param request Internal parameter for `{shiny}`.
 #'     DO NOT REMOVE.
 #' @import shiny
+#' @import bslib
 #' @noRd
 app_ui <- function(request) {
   tagList(
     # Leave this function for adding external resources
     golem_add_external_resources(),
     # Your application UI logic
-    fluidPage(
-      h1("cveR")
-    )
+    # add map_later
+    mod_fundamental_module_cveR_ui("new_CVEs")
+
   )
 }
 
