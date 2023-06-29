@@ -9,6 +9,7 @@
 #' @importFrom shiny NS tagList
 #' @importFrom bsicons bs_icon
 #' @import shinipsum
+#' @import bslib
 mod_fundamental_module_cveR_ui <- function(id){
   ns <- NS(id)
 
