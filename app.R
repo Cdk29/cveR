@@ -4,6 +4,6 @@
 # shiny::runApp()
 library(golem)
 # library(bsicons)
-remotes::install_github('rstudio/bsicons')
-library(bsicons)
+# remotes::install_github('rstudio/bsicons')
+# library(bsicons)
 run_app()

@@ -60,13 +60,18 @@
     "bsicons": {
       "Package": "bsicons",
       "Version": "0.1",
-      "Source": "Repository",
-      "Repository": "CRAN",
+      "Source": "GitHub",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteRepo": "bsicons",
+      "RemoteUsername": "rstudio",
+      "RemoteRef": "HEAD",
+      "RemoteSha": "1a12bb640b5c9cf7241b22a450d85333e6e9a0e4",
       "Requirements": [
         "R",
         "htmltools"
       ],
-      "Hash": "6d1f170155965ab16b429a76e1d7dbc1"
+      "Hash": "149a50ebccee226be2945f00a32d3e87"
     },
     "bslib": {
       "Package": "bslib",
@@ -183,14 +188,14 @@
     },
     "digest": {
       "Package": "digest",
-      "Version": "0.6.31",
+      "Version": "0.6.32",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
         "R",
         "utils"
       ],
-      "Hash": "8b708f296afd9ae69f450f9640be8990"
+      "Hash": "011ce1464a4716c488f4fc649c3d4d50"
     },
     "ellipsis": {
       "Package": "ellipsis",
@@ -541,20 +546,6 @@
         "tibble"
       ],
       "Hash": "76c9e04c712a05848ae7a23d2f170a40"
-    },
-    "remotes": {
-      "Package": "remotes",
-      "Version": "2.4.2",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Requirements": [
-        "R",
-        "methods",
-        "stats",
-        "tools",
-        "utils"
-      ],
-      "Hash": "227045be9aee47e6dda9bb38ac870d67"
     },
     "renv": {
       "Package": "renv",
