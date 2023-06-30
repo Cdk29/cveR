@@ -65,13 +65,12 @@ mod_fundamental_module_cveR_ui <- function(id){
 }
 
 #' fundamental_module_cveR Server Functions
-#' @importFrom shinipsum random_ggplot
 #' @noRd
 mod_fundamental_module_cveR_server <- function(id){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
-    output$plot1 <- renderPlot({random_ggplot()})
-    output$plot2 <- renderPlot({random_ggplot()})
+    output$plot1 <- renderPlot({shinipsum::random_ggplot()})
+    output$plot2 <- renderPlot({shinipsum::random_ggplot()})
 
   })
 }
