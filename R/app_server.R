@@ -9,6 +9,6 @@ app_server <- function(input, output, session) {
 
   # add map_later
   mod_fundamental_module_cveR_server("new_CVEs")
-  mod_fundamental_module_cveR_server("test")
+  mod_fundamental_module_cveR_server("project A")
 
 }
