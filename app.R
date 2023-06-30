@@ -3,4 +3,5 @@
 #
 # shiny::runApp()
 library(golem)
+library(bsicons)
 run_app()

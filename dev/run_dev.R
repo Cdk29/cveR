@@ -13,6 +13,5 @@ golem::detach_all_attached()
 golem::document_and_reload()
 # explicit se refère au fichier description
 renv::snapshot(exclude="cveR")
-
 # Run the application
 run_app()
