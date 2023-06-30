@@ -28,18 +28,18 @@ mod_fundamental_module_cveR_ui <- function(id){
   )
 
   box <- list(
-    value_box(
+    bslib::value_box(
       title = "Number of news CVEs",
       value = 44,
       showcase = bsicons::bs_icon("align-bottom")
     ),
-    value_box(
+    bslib::value_box(
       title = "CVEs suggested",
       value = 24,
       showcase = bsicons::bs_icon("align-center"),
       theme_color = "dark"
     ),
-    value_box(
+    bslib::value_box(
       title = "CVEs archived",
       value = 256,
       showcase = bsicons::bs_icon("handbag"),
@@ -50,10 +50,10 @@ mod_fundamental_module_cveR_ui <- function(id){
 
   page_sidebar(
     title = "cveR",
-    sidebar = sidebar(
+    sidebar = bslib::sidebar(
       position = "right",
       title = "Sidebar controls"),
-    layout_columns(
+    bslib::layout_columns(
       fill = FALSE,
       box[[1]], box[[2]], box[[3]]
     ),
