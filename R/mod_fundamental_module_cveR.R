@@ -58,7 +58,7 @@ mod_fundamental_module_cveR_ui <- function(id){
       box[[1]], box[[2]], box[[3]]
     ),
 
-    layout_columns(
+    bslib::layout_columns(
       cards[[1]], cards[[2]]
     )
   )
