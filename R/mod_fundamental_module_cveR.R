@@ -30,19 +30,19 @@ mod_fundamental_module_cveR_ui <- function(id){
   box <- list(
     bslib::value_box(
       title = "Number of news CVEs",
-      value = 44,
-      showcase = bsicons::bs_icon("align-bottom")
+      value = 44#,
+      # showcase = bsicons::bs_icon("align-bottom")
     ),
     bslib::value_box(
       title = "CVEs suggested",
       value = 24,
-      showcase = bsicons::bs_icon("align-center"),
+      # showcase = bsicons::bs_icon("align-center"),
       theme_color = "dark"
     ),
     bslib::value_box(
       title = "CVEs archived",
       value = 256,
-      showcase = bsicons::bs_icon("handbag"),
+      # showcase = bsicons::bs_icon("handbag"),
       theme_color = "secondary"
     )
   )

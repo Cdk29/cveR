@@ -1,0 +1,13 @@
+name: cveR
+title: cveR
+username:
+account: cdk296
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 9383190
+bundleId: 7405699
+url: https://cdk296.shinyapps.io/cveR/
+when: 1688124384.51117
+lastSyncTime: 1688124384.5112
+asMultiple: FALSE
+asStatic: FALSE
