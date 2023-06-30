@@ -17,13 +17,13 @@ mod_fundamental_module_cveR_ui <- function(id){
 
     bslib::navset_card_tab(
       title = "CVEs_plots",
-      nav_panel("CVE_plots1", plotOutput(ns("plot1"))),
-      nav_panel("CVE_plots2", plotOutput(ns("plot2"))),
+      bslib::nav_panel("CVE_plots1", plotOutput(ns("plot1"))),
+      bslib::nav_panel("CVE_plots2", plotOutput(ns("plot2"))),
     ),
     bslib::navset_card_tab(
       title = "CVEs_Tabs",
-      nav_panel("CVE_tab1"),
-      nav_panel("CVE_tab2")
+      bslib::nav_panel("CVE_tab1"),
+      bslib::nav_panel("CVE_tab2")
       )
   )
 
