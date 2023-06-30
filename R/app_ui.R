@@ -12,8 +12,11 @@ app_ui <- function(request) {
     golem_add_external_resources(),
     # Your application UI logic
     # add map_later
-    mod_fundamental_module_cveR_ui("new_CVEs")
-
+    bslib::page_navbar(
+      title = "cveR",
+    mod_fundamental_module_cveR_ui("new_CVEs"),
+    mod_fundamental_module_cveR_ui("test")
+    )
   )
 }
 

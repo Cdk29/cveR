@@ -48,8 +48,9 @@ mod_fundamental_module_cveR_ui <- function(id){
   )
 
 
-  bslib::page_sidebar(
-    title = "cveR",
+  # bslib::page_sidebar(
+  #   title = "cveR",
+  bslib::nav_panel(id,
     sidebar = bslib::sidebar(
       position = "right",
       title = "Sidebar controls"),
