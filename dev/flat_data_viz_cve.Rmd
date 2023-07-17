@@ -1,5 +1,5 @@
 ---
-title: "flat_bdd_logic.Rmd empty"
+title: "flat_data_viz_cve.Rmd empty"
 output: html_document
 editor_options: 
   chunk_output_type: console
@@ -14,34 +14,26 @@ library(testthat)
 pkgload::load_all(export_all = FALSE)
 ```
 
-# bdd_logic
+# data_viz_cve
 
-```{r}
-#cves_harvesting()
-CVEs_df <- read_data_CVEs("test_download_from_github.csv")
-CVEs_df <- tail(CVEs_df)
-head(CVEs_df,1)
-
-```
-
-```{r function-bdd_logic}
-#' bdd_logic Title
+```{r function-data_viz_cve}
+#' data_viz_cve Title
 #'
 #' @return 1
 #' @export
 #'
 #' @examples
-bdd_logic <- function() {
+data_viz_cve <- function() {
   1
 }
 ```
 
-```{r examples-bdd_logic}
-bdd_logic()
+```{r examples-data_viz_cve}
+data_viz_cve()
 ```
 
-```{r tests-bdd_logic}
-test_that("bdd_logic works", {
+```{r tests-data_viz_cve}
+test_that("data_viz_cve works", {
 
 })
 ```
@@ -50,6 +42,6 @@ test_that("bdd_logic works", {
 ```{r development-inflate, eval=FALSE}
 # Run but keep eval=FALSE to avoid infinite loop
 # Execute in the console directly
-fusen::inflate(flat_file = "dev/flat_bdd_logic.Rmd", vignette_name = "Go further")
+fusen::inflate(flat_file = "dev/flat_data_viz_cve.Rmd", vignette_name = "Go further")
 ```
 
