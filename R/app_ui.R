@@ -7,17 +7,18 @@
 #' @import bsicons
 #' @noRd
 app_ui <- function(request) {
-  tagList(
+  # tagList(
     # Leave this function for adding external resources
-    golem_add_external_resources(),
+    golem_add_external_resources()
     # Your application UI logic
     # add map_later
     bslib::page_navbar(
       title = "cveR",
+      sidebar = TRUE,
     mod_fundamental_module_cveR_ui("new_CVEs"),
     mod_fundamental_module_cveR_ui("project A")
     )
-  )
+  #)
 }
 
 #' Add external Resources to the Application
