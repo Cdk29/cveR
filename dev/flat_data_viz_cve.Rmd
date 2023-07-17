@@ -16,6 +16,13 @@ pkgload::load_all(export_all = FALSE)
 
 # data_viz_cve
 
+```{r}
+library(doc2vec)
+library(tokenizers.bpe)
+library(udpipe)
+```
+
+
 ```{r function-data_viz_cve}
 #' data_viz_cve Title
 #'
