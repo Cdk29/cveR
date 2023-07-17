@@ -12,6 +12,10 @@ coverage](https://codecov.io/gh/Cdk29/cveR/branch/main/graph/badge.svg)](https:/
 
 The goal of cveR is monitor the publication of new CVEs.
 
+## Notes
+
+-   mongoDB does not seems to work on Shinyapps.io, locally
+
 ## Installation
 
 You can install the development version of cveR from
