@@ -20,7 +20,134 @@ pkgload::load_all(export_all = FALSE)
 library(doc2vec)
 library(tokenizers.bpe)
 library(udpipe)
+library(cveR)
+library(stringr)
 ```
+
+
+```{r}
+#cves_harvesting()
+#df <- read_data_CVEs("allitems.csv")
+```
+
+```{r function-filter_data}
+filter_data <- function(df) {
+  data <- df %>%
+    filter(str_detect(Name, "CVE-2023")) %>%
+    filter(!str_detect(Description, "This candidate has been reserved"))
+  return(data)
+}
+
+```
+
+```{r}
+# # Use function
+# filtered_data <- filter_data(df)
+# 
+# # Check dimensions
+# dim(filtered_data)
+# 
+# # Write data to CSV
+# write.csv(filtered_data, "filtered_data_18_2023.csv", row.names = FALSE)
+```
+
+The line below solve a lot of problems with the encoding of the CVEs.
+```{r}
+df <- read.csv("filtered_data_18_2023.csv")
+df$Description <- iconv(df$Description, from = "ISO-8859-1", to = "UTF-8")
+```
+
+```{r}
+# Create a new dataframe
+archived_cve <- data.frame(Name = df$Name,
+                     Project = "new_cves",
+                     Archived = "Yes")
+
+# Check the new dataframe
+write.csv(archived_cve, "archived_data_18_2023.csv", row.names = FALSE)
+```
+
+```{r}
+x <- data.frame(doc_id = sprintf("doc_%s", 1:nrow(df)), 
+                text   = df$Description, 
+                stringsAsFactors = FALSE)
+x$text   <- tolower(x$text)
+x$text   <- gsub("[^[:alpha:]]", " ", x$text)
+x$text   <- gsub("[[:space:]]+", " ", x$text)
+x$text   <- trimws(x$text)
+x$nwords <- txt_count(x$text, pattern = " ")
+x        <- subset(x, nwords < 1000 & nchar(text) > 0)
+
+
+```
+
+```{r}
+## More realistic model
+# model <- paragraph2vec(x = x, type = "PV-DBOW", dim = 100, iter = 20, 
+#                        min_count = 5, lr = 0.05, threads = 4)
+```
+
+```{r}
+library(doc2vec)
+library(word2vec)
+library(uwot)
+library(dbscan)
+```
+
+```{r}
+x      <- data.frame(doc_id = 1:nrow(df), 
+                     text   = df$Description, 
+                     stringsAsFactors = FALSE)
+x$text <- txt_clean_word2vec(x$text)
+x      <- subset(x, txt_count_words(text) < 1000)
+
+d2v    <- paragraph2vec(x, type = "PV-DBOW", dim = 50,
+                        lr = 0.05, iter = 10,
+                        window = 15, hs = TRUE, negative = 0,
+                        sample = 0.00001, min_count = 5,
+                        threads = 1)
+model  <- top2vec(d2v,
+                  control.dbscan = list(minPts = 50),
+                  control.umap = list(n_neighbors = 15L, n_components = 3), umap = uwot::tumap,
+                  trace = TRUE)
+info   <- summary(model, top_n = 7)
+info$topwords
+```
+
+```{r}
+library(textplot)
+```
+
+```{r}
+plt <- plot(model, title = "BTM model", top_n = 5)
+plt
+```
+
+```{r}
+library(doc2vec)
+library(word2vec)
+library(uwot)
+library(dbscan)
+data(be_parliament_2020, package = "doc2vec")
+x      <- data.frame(doc_id = be_parliament_2020$doc_id,
+                     text   = be_parliament_2020$text_nl,
+                     stringsAsFactors = FALSE)
+x$text <- txt_clean_word2vec(x$text)
+x      <- subset(x, txt_count_words(text) < 1000)
+
+d2v    <- paragraph2vec(x, type = "PV-DBOW", dim = 50, 
+                        lr = 0.05, iter = 10,
+                        window = 15, hs = TRUE, negative = 0,
+                        sample = 0.00001, min_count = 5, 
+                        threads = 1)
+model  <- top2vec(d2v, 
+                  control.dbscan = list(minPts = 50), 
+                  control.umap = list(n_neighbors = 15L, n_components = 3), umap = tumap, 
+                  trace = TRUE)
+info   <- summary(model, top_n = 7)
+info$topwords
+```
+
 
 
 ```{r function-data_viz_cve}
