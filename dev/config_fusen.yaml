@@ -1,0 +1,13 @@
+flat_data_viz_cve.Rmd:
+  path: dev/flat_data_viz_cve.Rmd
+  state: active
+  R: R/filter_data.R
+  tests: []
+  vignettes: vignettes/data_viz.Rmd
+  inflate:
+    flat_file: dev/flat_data_viz_cve.Rmd
+    vignette_name: Data_Viz
+    open_vignette: true
+    check: true
+    document: true
+    overwrite: ask

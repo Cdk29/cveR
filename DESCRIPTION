@@ -9,16 +9,30 @@ License: MIT + file LICENSE
 URL: https://github.com/Cdk29/cveR
 BugReports: https://github.com/Cdk29/cveR/issues
 Imports: 
+    bsicons,
+    bslib,
     config (>= 0.3.1),
     golem (>= 0.4.0),
+    shinipsum,
     shiny (>= 1.7.4),
     utils
 Suggests: 
+    BTM,
+    concaveman,
+    data.table,
+    doc2vec,
+    ggraph,
     knitr,
     rmarkdown,
-    testthat
+    stopwords,
+    stringr,
+    testthat,
+    textplot,
+    tokenizers.bpe,
+    udpipe
 VignetteBuilder: 
     knitr
+Config/fusen/version: 0.5.1
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.2.3

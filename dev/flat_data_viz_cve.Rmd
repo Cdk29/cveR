@@ -64,112 +64,168 @@ archived_cve <- data.frame(Name = df$Name,
                      Archived = "Yes")
 
 # Check the new dataframe
-write.csv(archived_cve, "archived_data_18_2023.csv", row.names = FALSE)
+# write.csv(archived_cve, "archived_data_18_2023.csv", row.names = FALSE)
 ```
 
 ```{r}
-x <- data.frame(doc_id = sprintf("doc_%s", 1:nrow(df)), 
-                text   = df$Description, 
-                stringsAsFactors = FALSE)
-x$text   <- tolower(x$text)
-x$text   <- gsub("[^[:alpha:]]", " ", x$text)
-x$text   <- gsub("[[:space:]]+", " ", x$text)
-x$text   <- trimws(x$text)
-x$nwords <- txt_count(x$text, pattern = " ")
-x        <- subset(x, nwords < 1000 & nchar(text) > 0)
+library(BTM)
+library(udpipe)
+```
 
+```{r function-text_annotation}
+#' @title Text Annotation
+#' @description This function applies the udpipe model to a given dataframe and a specified text column for POS tagging.
+#' @param df Dataframe containing the text data.
+#' @param text_col Name of the column in df that contains the text data.
+#' @param ud_model The udpipe model to use for POS tagging.
+#' @return A data frame with annotations from the udpipe model.
+#' @examples
+#' data <- data.frame(description = c("text1", "text2", "text3"))
+#' ud_model <- udpipe_load_model("english-ud-2.0-170801.udpipe")
+#' annotated_data <- text_annotation(data, "description", ud_model)
+#' @export
+text_annotation <- function(df, text_col, ud_model) {
+  # Apply the udpipe model to the text data
+  ud_data <- udpipe_annotate(ud_model, x = df[[text_col]], tagger = "default", parser = "none")
+  ud_data <- as.data.frame(ud_data)
+  
+  return(ud_data)
+}
+```
+
+```{r}
+# dl <- udpipe_download_model(language = "english")
+ud_model <- udpipe_load_model("english-ewt-ud-2.5-191206.udpipe")
+
+test_df <- head(df)
+ud_data <- udpipe_annotate(ud_model, x = test_df$Description, tagger = "default", parser = "none")
+ud_data <- as.data.frame(ud_data)
+```
+
+```{r}
+test_df <- head(df, 600)
+```
+
+```{r examples-text_annotation}
+u_df <- text_annotation(test_df, "Description", ud_model)
+head(u_df)
+```
+
+```{r}
+#' @title BTM Topic Modeling
+#' @description This function applies the Biterm Topic Model (BTM) to a given annotated dataframe.
+#' @param df Annotated dataframe containing the text data.
+#' @param k Number of topics.
+#' @param iter Number of iterations for the Gibbs sampling algorithm.
+#' @return A BTM model.
+#' @examples
+#' data <- data.frame(doc_id = c(1,2,3), upos = c("NOUN", "PROPN", "NOUN"), lemma = c("noun1", "noun2", "noun3"))
+#' model <- btm_topic_model(data, k = 5, iter = 1000)
+btm_topic_model <- function(df, k = 10, iter = 1000) {
+  
+  
+  # Filter the data to include only nouns (NN, NNP, NNS)
+  # df <- subset(df, upos %in% c("PROPN", "VERB"))
+  df <- subset(df, xpos %in% c("NN", "NNP", "NNS", "VB", "VBD", "VBG", "VBN", "VBP", "VBZ"))  
+  # Prepare the data for the BTM model
+  data <- df[, c("doc_id", "token")]
+
+  # Apply the BTM model
+  model <- BTM(data, k = k, iter = iter, background = TRUE)
+  
+  return(model)
+}
 
 ```
 
 ```{r}
-## More realistic model
-# model <- paragraph2vec(x = x, type = "PV-DBOW", dim = 100, iter = 20, 
-#                        min_count = 5, lr = 0.05, threads = 4)
+btm_model <- btm_topic_model(u_df)
 ```
 
 ```{r}
-library(doc2vec)
-library(word2vec)
-library(uwot)
-library(dbscan)
-```
-
-```{r}
-x      <- data.frame(doc_id = 1:nrow(df), 
-                     text   = df$Description, 
-                     stringsAsFactors = FALSE)
-x$text <- txt_clean_word2vec(x$text)
-x      <- subset(x, txt_count_words(text) < 1000)
-
-d2v    <- paragraph2vec(x, type = "PV-DBOW", dim = 50,
-                        lr = 0.05, iter = 10,
-                        window = 15, hs = TRUE, negative = 0,
-                        sample = 0.00001, min_count = 5,
-                        threads = 1)
-model  <- top2vec(d2v,
-                  control.dbscan = list(minPts = 50),
-                  control.umap = list(n_neighbors = 15L, n_components = 3), umap = uwot::tumap,
-                  trace = TRUE)
-info   <- summary(model, top_n = 7)
-info$topwords
+topicterms <- terms(btm_model, top_n = 10)
+topicterms
 ```
 
 ```{r}
 library(textplot)
+library(ggraph)
+library(concaveman)
+plot(btm_model)
 ```
 
 ```{r}
-plt <- plot(model, title = "BTM model", top_n = 5)
-plt
+library(data.table)
+biterms <- as.data.table(u_df)
+biterms <- biterms[, cooccurrence(x = token,
+                                  relevant = xpos %in% c("NN", "NNP", "NNS", "VB", "VBD", "VBG", "VBN", "VBP", "VBZ") & 
+                                             nchar(token) > 2 & !token %in% stopwords("en"),
+                                  skipgram = 3),
+                   by = list(doc_id)]
 ```
 
 ```{r}
-library(doc2vec)
-library(word2vec)
-library(uwot)
-library(dbscan)
-data(be_parliament_2020, package = "doc2vec")
-x      <- data.frame(doc_id = be_parliament_2020$doc_id,
-                     text   = be_parliament_2020$text_nl,
-                     stringsAsFactors = FALSE)
-x$text <- txt_clean_word2vec(x$text)
-x      <- subset(x, txt_count_words(text) < 1000)
+traindata <- subset(u_df, xpos %in% c("NN", "NNP", "NNS", "VB", "VBD", "VBG", "VBN", "VBP", "VBZ") & !token %in% stopwords("en") & nchar(token) > 2)
+traindata <- traindata[, c("doc_id", "token")]
+model     <- BTM(traindata, biterms = biterms, k = 10, iter = 2000, background = TRUE)
+```
 
-d2v    <- paragraph2vec(x, type = "PV-DBOW", dim = 50, 
-                        lr = 0.05, iter = 10,
-                        window = 15, hs = TRUE, negative = 0,
-                        sample = 0.00001, min_count = 5, 
-                        threads = 1)
-model  <- top2vec(d2v, 
-                  control.dbscan = list(minPts = 50), 
-                  control.umap = list(n_neighbors = 15L, n_components = 3), umap = tumap, 
-                  trace = TRUE)
-info   <- summary(model, top_n = 7)
-info$topwords
+```{r}
+plot(model)
 ```
 
 
-
-```{r function-data_viz_cve}
-#' data_viz_cve Title
-#'
-#' @return 1
-#' @export
-#'
+```{r function-btm_topic_model_cooccurrence}
+#' @title BTM Topic Modeling with Cooccurrence
+#' @description This function applies the Biterm Topic Model (BTM) to a given annotated dataframe,
+#' using cooccurrence of terms to build the model.
+#' @param df Annotated dataframe containing the text data.
+#' @param k Number of topics.
+#' @param iter Number of iterations for the Gibbs sampling algorithm.
+#' @return A BTM model.
 #' @examples
-data_viz_cve <- function() {
-  1
+#' data <- data.frame(doc_id = c(1,2,3), xpos = c("NN", "VB", "NN"), token = c("token1", "token2", "token3"))
+#' model <- btm_topic_model_cooccurrence(data, k = 5, iter = 1000)
+#' @export
+btm_topic_model_cooccurrence <- function(df, k = 10, iter = 2000) {
+
+  # Extract cooccurrences of nouns, adjectives, and verbs within 3 words distance
+  biterms <- as.data.table(df)
+  biterms <- biterms[, cooccurrence(x = token,
+                                    relevant = upos %in% c("PROPN", "ADJ", "VERB")  & 
+                                               nchar(token) > 2 & !token %in% stopwords("en"),
+                                    skipgram = 5),
+                     by = list(doc_id)]
+  
+  # Build the biterm topic model
+  # xpos %in% c("NN", "NNP", "NNS", "VB", "VBD", "VBG", "VBN", "VBP", "VBZ")
+  traindata <- subset(df, upos %in% c("PROPN", "ADJ", "VERB")  & !token %in% stopwords("en") & nchar(token) > 2)
+  traindata <- traindata[, c("doc_id", "token")]
+  model <- BTM(traindata, biterms = biterms, k = k, iter = iter, background = TRUE)
+  
+  return(model)
 }
+
 ```
 
-```{r examples-data_viz_cve}
-data_viz_cve()
-```
+```{r examples-btm_topic_model_cooccurrence}
+library(stopwords)
+# Read data from CSV
+df <- read.csv("filtered_data_18_2023.csv")
+df <- tail(df, 600)
+df$Description <- iconv(df$Description, from = "ISO-8859-1", to = "UTF-8")
+# Load the udpipe model
+ud_model <- udpipe_load_model("english-ewt-ud-2.5-191206.udpipe")
 
-```{r tests-data_viz_cve}
-test_that("data_viz_cve works", {
+# Annotate the text data
+u_df <- text_annotation(df, "Description", ud_model)
+# Run Biterm Topic Model with cooccurrence
+btm_model_cooccurrence <- btm_topic_model_cooccurrence(u_df, k = 10)
 
-})
+# Plot the topic model
+plot(btm_model_cooccurrence)
+
+
 ```
 
 
