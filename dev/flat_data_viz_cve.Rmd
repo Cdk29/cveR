@@ -20,7 +20,7 @@ pkgload::load_all(export_all = FALSE)
 library(doc2vec)
 library(tokenizers.bpe)
 library(udpipe)
-library(cveR)
+# library(cveR)
 library(stringr)
 library(stopwords)
 
@@ -288,6 +288,52 @@ library(dplyr)
 library(tidyverse)
 archived_cve <- update_cve(new_cves, archived_cve)
 ```
+
+```{r function-topic_model_btm}
+#' @title Topic Modeling with Biterm Topic Model
+#'
+#' @description This function performs topic modeling on a given dataframe using Biterm Topic Model.
+#' It first converts the text data in the 'Description' column from ISO-8859-1 to UTF-8,
+#' and annotates it using the udpipe model. It then runs Biterm Topic Model with cooccurrence
+#' and plots the resulting topic model.
+#'
+#' @param df Dataframe The input dataframe containing the text data.
+#' @param ud_model_file String The file path to the udpipe model.
+#'
+#' @return A plot of the topic model.
+#' @export
+#'
+#' @examples
+#' df <- read.csv('path_to_your_file.csv')
+#' ud_model_file <- "english-ewt-ud-2.5-191206.udpipe"
+#' topic_model_plot <- topic_model_btm(df, ud_model_file)
+
+topic_model_btm <- function(df, ud_model_file) {
+  # Load necessary libraries
+  # Convert text data from ISO-8859-1 to UTF-8
+  df$Description <- iconv(df$Description, from = "ISO-8859-1", to = "UTF-8")
+
+  # Load the udpipe model
+  ud_model <- udpipe_load_model(ud_model_file)
+
+  # Annotate the text data
+  u_df <- text_annotation(df, "Description", ud_model)
+
+  # Run Biterm Topic Model with cooccurrence
+  btm_model_cooccurrence <- btm_topic_model_cooccurrence(u_df, k = 10)
+
+  # Plot the topic model
+  plot(btm_model_cooccurrence)
+}
+
+```
+
+```{r}
+df <- read.csv('path_to_your_file.csv')
+ud_model_file <- "english-ewt-ud-2.5-191206.udpipe"
+topic_model_plot <- topic_model_btm(df, ud_model_file)
+```
+
 
 ```{r development-inflate, eval=FALSE}
 # Run but keep eval=FALSE to avoid infinite loop

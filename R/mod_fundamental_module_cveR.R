@@ -15,10 +15,11 @@ mod_fundamental_module_cveR_ui <- function(id){
 
   cards <- list(
 
-    bslib::navset_card_tab(
-      title = "CVEs_plots",
-      bslib::nav_panel("CVE_plots1", plotOutput(ns("plot1"))),
-      bslib::nav_panel("CVE_plots2", plotOutput(ns("plot2"))),
+    bslib::card(
+      height = 250,
+      full_screen = TRUE,
+      bslib::card_header("A filling plot"),
+      bslib::card_body(plotOutput(ns("btm_plot")))
     ),
     bslib::navset_card_tab(
       title = "CVEs_Tabs",
@@ -67,11 +68,10 @@ mod_fundamental_module_cveR_ui <- function(id){
 
 #' fundamental_module_cveR Server Functions
 #' @noRd
-mod_fundamental_module_cveR_server <- function(id){
+mod_fundamental_module_cveR_server <- function(id, df){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
-    output$plot1 <- renderPlot({shinipsum::random_ggplot()})
-    output$plot2 <- renderPlot({shinipsum::random_ggplot()})
+    output$btm_plot <- renderPlot({shinipsum::random_ggplot()})
 
   })
 }
