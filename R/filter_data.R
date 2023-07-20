@@ -48,14 +48,21 @@ btm_topic_model_cooccurrence <- function(df, k = 10, iter = 2000) {
 }
 
 
-#' @noRd
+#' Filter Data
+#'
+#' Filters a data frame based on specific conditions.
+#'
+#' @param df A data frame.
+#' @return A filtered data frame.
+#' @import dplyr
+#' @importFrom stringr str_detect
+#' @export
 filter_data <- function(df) {
   data <- df %>%
-    filter(str_detect(Name, "CVE-2023")) %>%
-    filter(!str_detect(Description, "This candidate has been reserved"))
+    dplyr::filter(stringr::str_detect(Name, "CVE-2023")) %>%
+    dplyr::filter(!stringr::str_detect(Description, "This candidate has been reserved"))
   return(data)
 }
-
 
 #' @title Text Annotation
 #' @description This function applies the udpipe model to a given dataframe and a specified text column for POS tagging.
@@ -77,3 +84,38 @@ text_annotation <- function(df, text_col, ud_model) {
   
   return(ud_data)
 }
+
+#' @title Update the CVE dataframe
+#'
+#' @description Add the CVEs present in new_cves dataframe that are not yet present in archived_cve dataframe.
+#' The new CVEs are added with the Project as 'new_cves' and Archived status as 'No'.
+#'
+#' @param new_cves Dataframe The dataframe with new CVEs.
+#' @param archived_cve Dataframe The dataframe with archived CVEs.
+#'
+#' @return Dataframe The updated archived_cve dataframe with new CVEs added.
+#' @export
+#'
+#' @examples
+#' updated_cve <- update_cve(new_cves, archived_cve)
+
+#' library(dplyr)
+#' library(tidyverse)
+#' archived_cve <- update_cve(new_cves, archived_cve)
+update_cve <- function(new_cves, archived_cve) {
+  # Import necessary libraries
+  
+  # Find rows in new_cves not present in archived_cve
+  new_entries <- anti_join(new_cves, archived_cve, by = "Name")
+
+  # Select necessary columns and fill them with appropriate values
+  new_entries <- new_entries %>%
+    select(Name) %>%
+    mutate(Project = "new_cves", Archived = "No")
+
+  # Append new_entries to archived_cve
+  updated_cve <- bind_rows(archived_cve, new_entries)
+  
+  return(updated_cve)
+}
+

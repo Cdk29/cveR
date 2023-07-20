@@ -12,9 +12,11 @@ Imports:
     bsicons,
     bslib,
     config (>= 0.3.1),
+    dplyr,
     golem (>= 0.4.0),
     shinipsum,
     shiny (>= 1.7.4),
+    stringr,
     utils
 Suggests: 
     BTM,
@@ -25,9 +27,9 @@ Suggests:
     knitr,
     rmarkdown,
     stopwords,
-    stringr,
     testthat,
     textplot,
+    tidyverse,
     tokenizers.bpe,
     udpipe
 VignetteBuilder: 

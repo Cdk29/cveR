@@ -3,10 +3,10 @@ flat_data_viz_cve.Rmd:
   state: active
   R: R/filter_data.R
   tests: []
-  vignettes: vignettes/data_viz.Rmd
+  vignettes: vignettes/data-viz.Rmd
   inflate:
     flat_file: dev/flat_data_viz_cve.Rmd
-    vignette_name: Data_Viz
+    vignette_name: Data-viz
     open_vignette: true
     check: true
     document: true

@@ -22,6 +22,8 @@ library(tokenizers.bpe)
 library(udpipe)
 library(cveR)
 library(stringr)
+library(stopwords)
+
 ```
 
 
@@ -30,14 +32,23 @@ library(stringr)
 #df <- read_data_CVEs("allitems.csv")
 ```
 
+
 ```{r function-filter_data}
+#' Filter Data
+#'
+#' Filters a data frame based on specific conditions.
+#'
+#' @param df A data frame.
+#' @return A filtered data frame.
+#' @import dplyr
+#' @importFrom stringr str_detect
+#' @export
 filter_data <- function(df) {
   data <- df %>%
-    filter(str_detect(Name, "CVE-2023")) %>%
-    filter(!str_detect(Description, "This candidate has been reserved"))
+    dplyr::filter(stringr::str_detect(Name, "CVE-2023")) %>%
+    dplyr::filter(!stringr::str_detect(Description, "This candidate has been reserved"))
   return(data)
 }
-
 ```
 
 ```{r}
@@ -228,10 +239,59 @@ plot(btm_model_cooccurrence)
 
 ```
 
+```{r}
+# cveR::cves_harvesting()
+archived_cve <- read.csv("archived_data_18_2023.csv")
+```
+
+```{r}
+new_cves <- cveR::read_data_CVEs("allitems.csv")
+new_cves <- filter_data(new_cves)
+```
+
+```{r function-update_cve}
+#' @title Update the CVE dataframe
+#'
+#' @description Add the CVEs present in new_cves dataframe that are not yet present in archived_cve dataframe.
+#' The new CVEs are added with the Project as 'new_cves' and Archived status as 'No'.
+#'
+#' @param new_cves Dataframe The dataframe with new CVEs.
+#' @param archived_cve Dataframe The dataframe with archived CVEs.
+#'
+#' @return Dataframe The updated archived_cve dataframe with new CVEs added.
+#' @export
+#'
+#' @examples
+#' updated_cve <- update_cve(new_cves, archived_cve)
+
+update_cve <- function(new_cves, archived_cve) {
+  # Import necessary libraries
+  
+  # Find rows in new_cves not present in archived_cve
+  new_entries <- anti_join(new_cves, archived_cve, by = "Name")
+
+  # Select necessary columns and fill them with appropriate values
+  new_entries <- new_entries %>%
+    select(Name) %>%
+    mutate(Project = "new_cves", Archived = "No")
+
+  # Append new_entries to archived_cve
+  updated_cve <- bind_rows(archived_cve, new_entries)
+  
+  return(updated_cve)
+}
+
+```
+
+```{r examples-update_cve}
+library(dplyr)
+library(tidyverse)
+archived_cve <- update_cve(new_cves, archived_cve)
+```
 
 ```{r development-inflate, eval=FALSE}
 # Run but keep eval=FALSE to avoid infinite loop
 # Execute in the console directly
-fusen::inflate(flat_file = "dev/flat_data_viz_cve.Rmd", vignette_name = "Go further")
+fusen::inflate(flat_file = "dev/flat_data_viz_cve.Rmd", vignette_name = "Data-viz")
 ```
 
