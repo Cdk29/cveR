@@ -24,6 +24,20 @@ app_server <- function(input, output, session) {
       Archived = ifelse(Project == "project_A" & runif(n()) < 0.5, "No", Archived)  # Half of "project_A" rows become "No"
     )
 
+  observeEvent(input$update_cve, {
+    # Call the function when the button is clicked
+    cveR::cves_harvesting()
+
+    # If you want to update the `new_cves` and `cve_status_df` inside this event,
+    # you need to use reactiveValues or similar reactive constructs
+    # For example:
+
+    # rv <- reactiveValues()
+    # rv$new_cves <- cveR::read_data_CVEs("allitems.csv")
+    # rv$new_cves <- filter_data(rv$new_cves)
+    # rv$cve_status_df <- read.csv("archived_data_18_2023.csv")
+  })
+
   # add filter !!!!
   # add map_later
   # ud_model_file <- "english-ewt-ud-2.5-191206.udpipe"
