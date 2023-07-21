@@ -1,3 +1,4 @@
+
 library(tokenizers.bpe)
 library(udpipe)
 library(stringr)
@@ -9,6 +10,7 @@ library(ggraph)
 library(concaveman)
 library(data.table)
 library(tidyverse)
+library(DT)
 #' fundamental_module_cveR UI Function
 #'
 #' @description A shiny Module.
@@ -35,8 +37,8 @@ mod_fundamental_module_cveR_ui <- function(id){
     ),
     bslib::navset_card_tab(
       title = "CVEs_Tabs",
-      bslib::nav_panel("CVE_tab1"),
-      bslib::nav_panel("CVE_tab2")
+      bslib::nav_panel("CVE_tab1", DT::dataTableOutput(ns("cveTableNo"))),
+      bslib::nav_panel("CVE_tab2", DT::dataTableOutput(ns("cveTableYes")))
       )
   )
 
@@ -85,13 +87,23 @@ mod_fundamental_module_cveR_server <- function(id, cve_status_df, all_cves){
     ns <- session$ns
     ud_model_file <- "english-ewt-ud-2.5-191206.udpipe"
 
-    news_cves <- cve_status_df %>% filter(Archived == 'No')
-    news_cves <- all_cves %>% semi_join(news_cves, by = "Name")
+    cve_no <- cve_status_df %>% filter(Archived == 'No')
+    cve_yes <- cve_status_df %>% filter(Archived == 'Yes')
 
-    archived_cve <- all_cves %>% anti_join(news_cves, by = "Name")
+    # Join with all_cves
+    cve_tab1 <- all_cves %>% semi_join(cve_no, by = "Name")
+    cve_tab2 <- all_cves %>% semi_join(cve_yes, by = "Name")
+
+    # Render data tables for each tab
+    output$cveTableNo <- DT::renderDataTable(cve_tab1[c("Name", "Description")])
+    output$cveTableYes <- DT::renderDataTable(cve_tab2)
+
+    # other code...
+    news_cves <- all_cves %>% semi_join(cve_no, by = "Name")
     output$btm_plot <- renderPlot(topic_model_BTM_plot_generation(news_cves, ud_model_file))
   })
 }
+
 
 ## To be copied in the UI
 # mod_fundamental_module_cveR_ui("fundamental_module_cveR_1")
