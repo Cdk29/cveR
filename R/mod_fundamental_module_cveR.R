@@ -96,7 +96,7 @@ mod_fundamental_module_cveR_server <- function(id, cve_status_df, all_cves){
 
     # Render data tables for each tab
     output$cveTableNo <- DT::renderDataTable(cve_tab1[c("Name", "Description")])
-    output$cveTableYes <- DT::renderDataTable(cve_tab2)
+    output$cveTableYes <- DT::renderDataTable(cve_tab2[c("Name", "Description")])
 
     # other code...
     news_cves <- all_cves %>% semi_join(cve_no, by = "Name")
