@@ -10,12 +10,13 @@ library(dplyr)
 #' @noRd
 app_server <- function(input, output, session) {
   # Your application server logic
-
-  archived_cve <- read.csv("archived_data_18_2023.csv")
-  archived_cve <- archived_cve %>%
-    mutate(Archived = ifelse(row_number() > n() - 30, 'No', Archived))
+  all_cves <- read.csv("filtered_data_18_2023.csv")
+  cve_status_df <- read.csv("archived_data_18_2023.csv")
+  cve_status_df <- cve_status_df %>%
+    mutate(Archived = ifelse(row_number() > n() - 60, 'No', Archived))
   # add map_later
-  mod_fundamental_module_cveR_server("new_CVEs", archived_cve)
+  # ud_model_file <- "english-ewt-ud-2.5-191206.udpipe"
+  mod_fundamental_module_cveR_server("new_CVEs", cve_status_df, all_cves)
   # mod_fundamental_module_cveR_server("project A")
 
 }

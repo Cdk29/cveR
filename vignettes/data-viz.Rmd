@@ -23,7 +23,7 @@ library(cveR)
 # data_viz_cve
 
 ```{r}
-library(doc2vec)
+# library(doc2vec)
 library(tokenizers.bpe)
 library(udpipe)
 library(cveR)
@@ -151,7 +151,45 @@ model     <- BTM(traindata, biterms = biterms, k = 10, iter = 2000, background =
 plot(model)
 ```
 
-```{r examples-btm_topic_model_cooccurrence}
+The build of this function fail for whatever reason when using fusen. So I created manually.
+
+
+```{r}
+#' @title Topic Modeling with Cooccurrence
+#' @description This function applies the Biterm Topic Model (BTM) to a given annotated dataframe,
+#' using cooccurrence of terms to build the model.
+#' @param df Annotated dataframe containing the text data.
+#' @param k Number of topics.
+#' @param iter Number of iterations for the Gibbs sampling algorithm.
+#' @return A BTM model.
+#' @export
+#' @examples
+#' data <- data.frame(doc_id = c(1,2,3), xpos = c("NN", "VB", "NN"), token = c("token1", "token2", "token3"))
+#' model <- btm_topic_model_cooccurrence(data, k = 5, iter = 1000)
+btm_topic_model_cooccurrence <- function(df, k = 10, iter = 2000) {
+
+  # Extract cooccurrences of nouns, adjectives, and verbs within 3 words distance
+  biterms <- as.data.table(df)
+  head(df,1)
+  head(biterms,1)
+  biterms <- biterms[, udpipe::cooccurrence(x = token,
+                                    relevant = upos %in% c("PROPN", "ADJ", "VERB")  & 
+                                               nchar(token) > 2 & !token %in% stopwords("en"),
+                                    skipgram = 5),
+                     by = list(doc_id)]
+  
+  # Build the biterm topic model
+  # xpos %in% c("NN", "NNP", "NNS", "VB", "VBD", "VBG", "VBN", "VBP", "VBZ")
+  traindata <- subset(df, upos %in% c("PROPN", "ADJ", "VERB") & !token %in% stopwords("en") & nchar(token) > 2)
+  traindata <- traindata[, c("doc_id", "token")]
+  model <- BTM(traindata, biterms = biterms, k = k, iter = iter, background = TRUE)
+  
+  return(model)
+}
+
+```
+
+```{r}
 library(stopwords)
 # Read data from CSV
 df <- read.csv("filtered_data_18_2023.csv")
@@ -185,5 +223,51 @@ new_cves <- filter_data(new_cves)
 library(dplyr)
 library(tidyverse)
 archived_cve <- update_cve(new_cves, archived_cve)
+```
+
+```{r}
+#' @title Topic Modeling with Biterm Topic Model
+#'
+#' @description This function performs topic modeling on a given dataframe using Biterm Topic Model.
+#' It first converts the text data in the 'Description' column from ISO-8859-1 to UTF-8,
+#' and annotates it using the udpipe model. It then runs Biterm Topic Model with cooccurrence
+#' and plots the resulting topic model.
+#'
+#' @param df Dataframe The input dataframe containing the text data.
+#' @param ud_model_file String The file path to the udpipe model.
+#'
+#' @return A plot of the topic model.
+#' @export
+#'
+#' @examples
+#' df <- read.csv('path_to_your_file.csv')
+#' ud_model_file <- "english-ewt-ud-2.5-191206.udpipe"
+#' topic_model_plot <- topic_model_btm(df, ud_model_file)
+
+topic_model_btm <- function(df, ud_model_file) {
+  # Load necessary libraries
+  # Convert text data from ISO-8859-1 to UTF-8
+  df$Description <- iconv(df$Description, from = "ISO-8859-1", to = "UTF-8")
+
+  # Load the udpipe model
+  ud_model <- udpipe_load_model(ud_model_file)
+  # Annotate the text data
+  u_df <- text_annotation(df, "Description", ud_model)
+  # Run Biterm Topic Model with cooccurrence
+  btm_model_cooccurrence <- btm_topic_model_cooccurrence(u_df, k = 10)
+
+  # Plot the topic model
+  plot(btm_model_cooccurrence)
+  
+  
+}
+
+```
+
+```{r}
+df <- read.csv("filtered_data_18_2023.csv")
+test_df <- tail(df, 600)
+ud_model_file <- "english-ewt-ud-2.5-191206.udpipe"
+topic_model_plot <- topic_model_btm(test_df, ud_model_file)
 ```
 

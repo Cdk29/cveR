@@ -11,27 +11,27 @@ BugReports: https://github.com/Cdk29/cveR/issues
 Imports: 
     bsicons,
     bslib,
+    BTM,
+    concaveman,
     config (>= 0.3.1),
+    data.table,
     dplyr,
+    ggraph,
     golem (>= 0.4.0),
     shinipsum,
     shiny (>= 1.7.4),
-    stringr,
-    utils
-Suggests: 
-    BTM,
-    concaveman,
-    data.table,
-    doc2vec,
-    ggraph,
-    knitr,
-    rmarkdown,
     stopwords,
-    testthat,
+    stringr,
     textplot,
     tidyverse,
     tokenizers.bpe,
-    udpipe
+    udpipe,
+    utils
+Suggests: 
+    doc2vec,
+    knitr,
+    rmarkdown,
+    testthat
 VignetteBuilder: 
     knitr
 Config/fusen/version: 0.5.1

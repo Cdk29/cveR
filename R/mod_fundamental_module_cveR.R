@@ -1,3 +1,14 @@
+library(tokenizers.bpe)
+library(udpipe)
+library(stringr)
+library(stopwords)
+library(dplyr)
+library(BTM)
+library(textplot)
+library(ggraph)
+library(concaveman)
+library(data.table)
+library(tidyverse)
 #' fundamental_module_cveR UI Function
 #'
 #' @description A shiny Module.
@@ -19,7 +30,8 @@ mod_fundamental_module_cveR_ui <- function(id){
       height = 250,
       full_screen = TRUE,
       bslib::card_header("A filling plot"),
-      bslib::card_body(plotOutput(ns("btm_plot")))
+      plotOutput(ns("btm_plot"))
+      # imageOutput(ns("btm_plot"))
     ),
     bslib::navset_card_tab(
       title = "CVEs_Tabs",
@@ -68,10 +80,23 @@ mod_fundamental_module_cveR_ui <- function(id){
 
 #' fundamental_module_cveR Server Functions
 #' @noRd
-mod_fundamental_module_cveR_server <- function(id, df){
+mod_fundamental_module_cveR_server <- function(id, cve_status_df, all_cves){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
-    output$btm_plot <- renderPlot({shinipsum::random_ggplot()})
+    ud_model_file <- "english-ewt-ud-2.5-191206.udpipe"
+
+    news_cves <- cve_status_df %>% filter(Archived == 'No')
+    news_cves <- all_cves %>% semi_join(news_cves, by = "Name")
+
+    archived_cve <- all_cves %>% anti_join(news_cves, by = "Name")
+    output$btm_plot <- renderPlot(topic_model_BTM_plot_generation(news_cves, ud_model_file))
+    # output$btm_plot <- renderImage({
+    #   filename <- topic_model_BTM_plot_generation(news_cves, ud_model_file)
+    #   list(src = filename,
+    #        contentType = 'image/png',
+    #        alt = "This is an alternative text for the image",
+    #        deleteFile = TRUE)
+    # }, deleteFile = TRUE)
 
   })
 }
