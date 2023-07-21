@@ -58,7 +58,9 @@ mod_fundamental_module_cveR_ui <- function(id){
   bslib::nav_panel(id,
                    sidebar = bslib::sidebar(
                      position = "right",
-                     title = "Sidebar controls"),
+                     title = "Sidebar controls",
+                     actionButton(inputId = ns("update_cve"), label = "Update CVE Status")  # Add this line for button
+                   ),
                    bslib::layout_columns(
                      fill = FALSE,
                      box[[1]], box[[2]]

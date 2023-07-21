@@ -22,7 +22,7 @@ app_ui <- function(request) {
 
     do.call(bslib::page_navbar, c(list(
       title = "cveR",
-      sidebar = TRUE),
+      sidebar = sidebar(shiny::actionButton(inputId = "update_cve", label = "Update CVE Status"))),
       nav_content))
   #)
 }
