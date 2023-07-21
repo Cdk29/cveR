@@ -28,5 +28,11 @@ app_server <- function(input, output, session) {
   # add map_later
   # ud_model_file <- "english-ewt-ud-2.5-191206.udpipe"
   # mod_fundamental_module_cveR_server("new_CVEs", cve_status_df, all_cves)
-  purrr::map(unique(cve_status_df$Project), ~mod_fundamental_module_cveR_server(.x, cve_status_df, all_cves))
+  # existing code...
+  purrr::map(unique(cve_status_df$Project), ~ {
+    current_project <- .x
+    cve_status_df_filtered <- cve_status_df %>% dplyr::filter(Project == current_project)
+    all_cves_filtered <- all_cves %>% semi_join(cve_status_df_filtered, by = "Name")
+    mod_fundamental_module_cveR_server(current_project, cve_status_df_filtered, all_cves_filtered)
+  })
 }
