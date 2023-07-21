@@ -17,6 +17,5 @@ app_server <- function(input, output, session) {
   # add map_later
   # ud_model_file <- "english-ewt-ud-2.5-191206.udpipe"
   mod_fundamental_module_cveR_server("new_CVEs", cve_status_df, all_cves)
-  # mod_fundamental_module_cveR_server("project A")
 
 }

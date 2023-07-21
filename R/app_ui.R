@@ -15,8 +15,8 @@ app_ui <- function(request) {
     bslib::page_navbar(
       title = "cveR",
       sidebar = TRUE,
-    mod_fundamental_module_cveR_ui("new_CVEs"),
-    mod_fundamental_module_cveR_ui("project A")
+    mod_fundamental_module_cveR_ui("new_CVEs")
+    # mod_fundamental_module_cveR_ui("project A")
     )
   #)
 }
