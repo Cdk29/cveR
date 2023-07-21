@@ -13,7 +13,8 @@ app_server <- function(input, output, session) {
   all_cves <- read.csv("filtered_data_18_2023.csv")
   cve_status_df <- read.csv("archived_data_18_2023.csv")
   cve_status_df <- cve_status_df %>%
-    mutate(Archived = ifelse(row_number() > n() - 60, 'No', Archived))
+    mutate(Archived = ifelse(row_number() <= 60, 'No', 'Archived'))
+
 
   set.seed(123)  # Set a random seed for reproducibility
 
