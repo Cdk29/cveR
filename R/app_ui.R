@@ -11,9 +11,13 @@ app_ui <- function(request) {
     # Leave this function for adding external resources
     golem_add_external_resources()
     cve_status_df <- read.csv("archived_data_18_2023.csv")
-    print(unique(cve_status_df$Project))
-    # Your application UI logic
-    # add map_later
+    set.seed(123)  # Set a random seed for reproducibility
+
+    cve_status_df <- cve_status_df %>%
+      mutate(
+        Project = ifelse(runif(n()) < 0.01, "project_A", Project),  # 1% of rows become "project_A"
+        Archived = ifelse(Project == "project_A" & runif(n()) < 0.5, "No", Archived)  # Half of "project_A" rows become "No"
+      )
     nav_content <- purrr::map(unique(cve_status_df$Project), ~mod_fundamental_module_cveR_ui(.x))
 
     do.call(bslib::page_navbar, c(list(

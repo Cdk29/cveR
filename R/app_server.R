@@ -15,6 +15,14 @@ app_server <- function(input, output, session) {
   cve_status_df <- cve_status_df %>%
     mutate(Archived = ifelse(row_number() > n() - 60, 'No', Archived))
 
+  set.seed(123)  # Set a random seed for reproducibility
+
+  cve_status_df <- cve_status_df %>%
+    mutate(
+      Project = ifelse(runif(n()) < 0.01, "project_A", Project),  # 1% of rows become "project_A"
+      Archived = ifelse(Project == "project_A" & runif(n()) < 0.5, "No", Archived)  # Half of "project_A" rows become "No"
+    )
+
   # add filter !!!!
   # add map_later
   # ud_model_file <- "english-ewt-ud-2.5-191206.udpipe"
