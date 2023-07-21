@@ -101,6 +101,7 @@ mod_fundamental_module_cveR_server <- function(id, cve_status_df, all_cves){
 }
 
 
+
 ## To be copied in the UI
 # mod_fundamental_module_cveR_ui("fundamental_module_cveR_1")
 
