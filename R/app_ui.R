@@ -10,14 +10,16 @@ app_ui <- function(request) {
   # tagList(
     # Leave this function for adding external resources
     golem_add_external_resources()
+    cve_status_df <- read.csv("archived_data_18_2023.csv")
+    print(unique(cve_status_df$Project))
     # Your application UI logic
     # add map_later
-    bslib::page_navbar(
+    nav_content <- purrr::map(unique(cve_status_df$Project), ~mod_fundamental_module_cveR_ui(.x))
+
+    do.call(bslib::page_navbar, c(list(
       title = "cveR",
-      sidebar = TRUE,
-    mod_fundamental_module_cveR_ui("new_cves")
-    # mod_fundamental_module_cveR_ui("project A")
-    )
+      sidebar = TRUE),
+      nav_content))
   #)
 }
 
