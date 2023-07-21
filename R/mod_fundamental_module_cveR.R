@@ -90,14 +90,6 @@ mod_fundamental_module_cveR_server <- function(id, cve_status_df, all_cves){
 
     archived_cve <- all_cves %>% anti_join(news_cves, by = "Name")
     output$btm_plot <- renderPlot(topic_model_BTM_plot_generation(news_cves, ud_model_file))
-    # output$btm_plot <- renderImage({
-    #   filename <- topic_model_BTM_plot_generation(news_cves, ud_model_file)
-    #   list(src = filename,
-    #        contentType = 'image/png',
-    #        alt = "This is an alternative text for the image",
-    #        deleteFile = TRUE)
-    # }, deleteFile = TRUE)
-
   })
 }
 
